@@ -6,7 +6,7 @@ const Search = ({ navigation }) => {
     <View style={styles.center}>
       <Text>This is the Search screen</Text>
       <Button
-        title="Go to chat Screen"
+        title="Go to the profile"
         onPress={() => navigation.push('Profile', { email: 'ivanrs99@hot' })}
       />
     </View>
