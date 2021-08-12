@@ -7,7 +7,7 @@ const Search = ({ navigation }) => {
       <Text>This is the Search screen</Text>
       <Button
         title="Go to the profile"
-        onPress={() => navigation.push('Profile', { email: 'ivanrs99@hot' })}
+        onPress={() => navigation.push("Profile", { email: "ivanrs99@hot" })}
       />
     </View>
   );
@@ -20,4 +20,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
+
 export default Search;

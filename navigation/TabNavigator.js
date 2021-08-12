@@ -42,8 +42,8 @@ const BottomTabNavigator = () => {
                         tabBarVisible,
                     };
                 }} />
-            <Tab.Screen name="Search" component={SearchStackNavigator} />
-            <Tab.Screen name="Chat" component={ChatStackNavigator} options={{ tabBarBadge: 3 }} />
+            {/*<Tab.Screen name="Search" component={SearchStackNavigator} />
+            <Tab.Screen name="Chat" component={ChatStackNavigator} options={{ tabBarBadge: 3 }} /> */}
             <Tab.Screen name="Profile" component={ProfileStackNavigator} />
         </Tab.Navigator>
     );

@@ -65,7 +65,8 @@ const Profile = ({ navigation, route }) => {
             <Text style={styles.user}>@{user.user}</Text>
             {route.params?.email == firebase.auth().currentUser.email &&
               <TouchableHighlight onPress={() => singOut()}>
-                <Ionicons name="menu-outline" color="white" style={styles.menu_icon} />
+                {/*<Ionicons name="menu-outline" color="white" style={styles.menu_icon} />*/}
+                <Ionicons name="close-circle-outline" color="white" style={styles.menu_icon} />
               </TouchableHighlight>
             }
           </View>
