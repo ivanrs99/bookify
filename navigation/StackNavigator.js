@@ -66,6 +66,7 @@ const ProfileStackNavigator = () => {
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen name="Profile" component={Profile} initialParams={{ email: firebase.auth().currentUser.email }}/>
       <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="ReviewForm" component={ReviewForm} options={{tabBarVisible: false}}/>
     </Stack.Navigator>
   );
 }

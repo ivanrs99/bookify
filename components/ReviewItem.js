@@ -24,7 +24,7 @@ const ReviewItem = (props) => {
                 </View>
                 <View style={styles.body_review}>
                     <View style={styles.header_data}>
-                        <Text style={styles.subtitle}>{props.review.title}</Text>
+                        <Text style={styles.subtitle}>{props.review.title} - {props.review.author}</Text>
                         <Rating type="custom" tintColor="white"
                             ratingBackgroundColor="transparent" imageSize={15}
                             readonly startingValue={props.review.stars}

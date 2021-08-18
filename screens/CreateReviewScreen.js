@@ -8,6 +8,7 @@ import { showMessage } from "react-native-flash-message";
 
 const ReviewForm = ({ navigation }) => {
   const [title, setTitle] = useState("")
+  const [author, setAuthor] = useState("")
   const [stars, setStars] = useState(0)
   const [review, setReview] = useState("")
 
@@ -17,7 +18,7 @@ const ReviewForm = ({ navigation }) => {
     firebase.firestore().collection("users").where("email", "==", email).limit(1).get()
       .then(async (value) => {
         await firebase.firestore().collection("users").doc(value.docs[0].id)
-          .collection("reviews").add({ title, stars, review, created: firebase.firestore.FieldValue.serverTimestamp() })
+          .collection("reviews").add({ title, author, stars, review, created: firebase.firestore.FieldValue.serverTimestamp() })
         showMessage({
           message: "PERFECTO!",
           description: "Review guardada con éxito!",
@@ -38,7 +39,8 @@ const ReviewForm = ({ navigation }) => {
         </TouchableHighlight>
       </View>
       <View style={styles.card}>
-        <Input placeholder='Title' label='Title' labelStyle={{ color: 'black' }} onChangeText={setTitle} />
+        <Input placeholder='Title' onChangeText={setTitle} />
+        <Input placeholder='Author' onChangeText={setAuthor} />
         <View style={styles.score}>
           <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 15 }}>Stars: </Text>
           <Rating imageSize={30} onFinishRating={setStars} startingValue={0} />

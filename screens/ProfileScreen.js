@@ -1,17 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { View, StyleSheet, Text, Image, ActivityIndicator, TouchableHighlight, ScrollView } from "react-native";
-import WavyStyle from '../components/WavyStyle'
-import profilePic from '../assets/profile.jpg'
-import firebase from '../database/firebase'
+import WavyStyle from '../components/WavyStyle';
+import profilePic from '../assets/profile.jpg';
+import firebase from '../database/firebase';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import ProfileBtns from '../components/ProfileBtns'
-import ReviewItem from '../components/ReviewItem'
+import ProfileBtns from '../components/ProfileBtns';
+import ReviewItem from '../components/ReviewItem';
+//import BottomSheet from 'reanimated-bottom-sheet';
+import BottomSheet from '@gorhom/bottom-sheet';
 
 const Profile = ({ navigation, route }) => {
   const [user, setUser] = useState("");
   const [reviews, setReviews] = useState([]);
   const [image, setImage] = useState(null)
   const [isLoaded, setLoaded] = useState(false);
+  const [isOpen, setOpen] = useState(0);
+  const bottomSheetRef = useRef(null);
 
   useEffect(() => {
     getData();
@@ -53,6 +57,15 @@ const Profile = ({ navigation, route }) => {
     setImage(url)
   }
 
+  const handleBS = () => {
+    if (isOpen == 0) bottomSheetRef.current.snapTo(1)
+    else bottomSheetRef.current.snapTo(0)
+  }
+
+  const handleSheetChanges = useCallback((index) => {
+    setOpen(index);
+  }, []);
+
   return (
     <>
       {!isLoaded ?
@@ -64,34 +77,53 @@ const Profile = ({ navigation, route }) => {
           <View style={styles.menu_user}>
             <Text style={styles.user}>@{user.user}</Text>
             {route.params?.email == firebase.auth().currentUser.email &&
-              <TouchableHighlight onPress={() => singOut()}>
-                {/*<Ionicons name="menu-outline" color="white" style={styles.menu_icon} />*/}
-                <Ionicons name="close-circle-outline" color="white" style={styles.menu_icon} />
+              <TouchableHighlight onPress={() => handleBS()}>
+                <Ionicons name="menu-outline" color="white" style={styles.menu_icon} />
               </TouchableHighlight>
             }
           </View>
           <ScrollView>
-            <View style={styles.container}>
-              <WavyStyle customStyles={styles.svgCurve} />
-              <View style={{ marginTop: 43 }}>
-                {image ?
-                  <Image source={{ uri: image }} style={styles.profileImg} />
-                  :
-                  <Image source={profilePic} style={styles.profileImg} />
-                }
-              </View>
-              {route.params?.email != firebase.auth().currentUser.email && <ProfileBtns />}
-              <View style={styles.reviews_cont}>
-                {reviews.map((review, i) => {
-                  return (
-                    <View key={i}>
-                      <ReviewItem username={user.user} img={image} review={review} />
-                    </View>
-                  )
-                })}
-              </View>
+            <WavyStyle customStyles={styles.svgCurve} />
+            <View style={{ marginTop: 43, alignSelf: 'center' }}>
+              {image ?
+                <Image source={{ uri: image }} style={styles.profileImg} />
+                :
+                <Image source={profilePic} style={styles.profileImg} />
+              }
+            </View>
+            {route.params?.email != firebase.auth().currentUser.email && <ProfileBtns />}
+            <View style={styles.reviews_cont}>
+              {reviews.map((review, i) => {
+                return (
+                  <View key={i}>
+                    <ReviewItem username={user.user} img={image} review={review} />
+                  </View>
+                )
+              })}
+              {reviews.length == 0 &&
+                <View style={{ marginTop: 20 }}>
+                  <Text>No hay ninguna review publicada todavía.</Text>
+                  <TouchableHighlight onPress={() => navigation.push("ReviewForm")}>
+                    <Text style={styles.crearBtn}>Crea una!</Text>
+                  </TouchableHighlight>
+                </View>
+              }
             </View>
           </ScrollView>
+          <BottomSheet
+            ref={bottomSheetRef}
+            index={0}
+            snapPoints={[-100, '15%']}
+            onChange={handleSheetChanges}
+          >
+            <View style={styles.panel}>
+              <TouchableHighlight
+                style={styles.panelButton}
+                onPress={() => singOut()}>
+                <Text style={styles.panelButtonTitle}>Cerrar sesión</Text>
+              </TouchableHighlight>
+            </View>
+          </BottomSheet>
         </View>
       }
     </>
@@ -99,23 +131,6 @@ const Profile = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    textAlign: "center",
-  },
-  svgCurve: {
-    position: 'absolute',
-    width: '100%',
-    top: 0,
-    zIndex: 0,
-  },
-  profileImg: {
-    borderRadius: 100,
-    height: 130,
-    width: 130,
-    zIndex: 9,
-  },
   menu_user: {
     backgroundColor: 'tomato',
     position: 'absolute',
@@ -140,10 +155,43 @@ const styles = StyleSheet.create({
     fontSize: 33,
     marginRight: 10,
   },
+  svgCurve: {
+    position: 'absolute',
+    width: '100%',
+    top: 0,
+  },
+  profileImg: {
+    borderRadius: 100,
+    height: 130,
+    width: 130,
+  },
   reviews_cont: {
     marginTop: 40,
     width: '100%',
-  }
+  },
+  crearBtn: {
+    marginTop: 5,
+    color: 'tomato',
+    textDecorationLine: 'underline',
+    fontSize: 16,
+  },
+  panel: {
+    padding: 20,
+    backgroundColor: '#FFFFFF',
+    paddingTop: 20,
+  },
+  panelButton: {
+    padding: 13,
+    borderRadius: 10,
+    backgroundColor: 'tomato',
+    alignItems: 'center',
+    marginVertical: 7,
+  },
+  panelButtonTitle: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: 'white',
+  },
 });
 
 export default Profile;
