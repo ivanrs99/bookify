@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useIsFocused } from '@react-navigation/native';
 import { View, StyleSheet, Text, Image, ActivityIndicator, TouchableHighlight, ScrollView } from "react-native";
 import WavyStyle from '../components/WavyStyle';
@@ -7,29 +7,31 @@ import firebase from '../database/firebase';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ProfileBtns from '../components/ProfileBtns';
 import ReviewItem from '../components/ReviewItem';
-//import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet from 'reanimated-bottom-sheet';
 
 const Profile = ({ navigation, route }) => {
-  const isFocused = useIsFocused();
   const [user, setUser] = useState("");
   const [reviews, setReviews] = useState([]);
   const [image, setImage] = useState(null)
   const [isLoaded, setLoaded] = useState(false);
-  const [isOpen, setOpen] = useState(0);
-  const bottomSheetRef = useRef(null);
+  const [isOpen, setOpen] = useState(false);
+  const isFocused = useIsFocused();
+  const sheetRef = useRef(null);
 
   useEffect(() => {
+    sheetRef.current.snapTo(1)
+    setOpen(false)
     getData();
-    setTimeout(() => { setLoaded(true) }, 1000)
+    if (image == null) {
+      setTimeout(() => { setLoaded(true) }, 1000)
+    }
   }, [isFocused])
 
-  //Cerrar sesión
   const singOut = () => {
     firebase.auth().signOut()
     navigation.popToTop()
   }
 
-  //Obtener usuario y sus reviews
   const getData = async () => {
     const email = route.params?.email;
     await firebase.firestore().collection("users").where("email", "==", email).limit(1).get()
@@ -59,16 +61,44 @@ const Profile = ({ navigation, route }) => {
   }
 
   const handleBS = () => {
-    if (isOpen == 0) bottomSheetRef.current.snapTo(1)
-    else bottomSheetRef.current.snapTo(0)
+    if (!isOpen) sheetRef.current.snapTo(0)
+    else sheetRef.current.snapTo(1)
   }
 
-  const handleSheetChanges = useCallback((index) => {
-    setOpen(index);
-  }, []);
+  const renderContent = () => (
+    <View style={styles.panel}>
+      <TouchableHighlight
+        style={styles.panelButton}
+        >
+        <Text style={styles.panelButtonTitle}>Editar perfil</Text>
+      </TouchableHighlight>
+      <TouchableHighlight
+        style={styles.panelButtonCerrar}
+        onPress={() => singOut()}>
+        <Text style={styles.panelButtonTitle}>Cerrar sesión</Text>
+      </TouchableHighlight>
+    </View>
+  );
+
+  const renderHeader = () => (
+    <View style={styles.header}>
+      <View style={styles.panelHeader}>
+        <View style={styles.panelHandle} />
+      </View>
+    </View>
+  );
 
   return (
     <>
+      <BottomSheet
+        ref={sheetRef}
+        snapPoints={[155, 0]}
+        renderContent={renderContent}
+        renderHeader={renderHeader}
+        initialSnap={1}
+        onOpenEnd={() => setOpen(true)}
+        onCloseEnd={() => setOpen(false)}
+      />
       {!isLoaded ?
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <ActivityIndicator size="large" color="tomato" />
@@ -108,21 +138,6 @@ const Profile = ({ navigation, route }) => {
               }
             </View>
           </ScrollView>
-          {/** 
-          <BottomSheet
-            ref={bottomSheetRef}
-            index={0}
-            snapPoints={[-100, '15%']}
-            onChange={handleSheetChanges}
-          >
-            <View style={styles.panel}>
-              <TouchableHighlight
-                style={styles.panelButton}
-                onPress={() => singOut()}>
-                <Text style={styles.panelButtonTitle}>Cerrar sesión</Text>
-              </TouchableHighlight>
-            </View>
-          </BottomSheet>*/}
         </View>
       }
     </>
@@ -169,21 +184,44 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   panel: {
-    padding: 20,
+    paddingHorizontal: 20,
     backgroundColor: '#FFFFFF',
-    paddingTop: 20,
   },
   panelButton: {
-    padding: 13,
+    padding: 10,
     borderRadius: 10,
     backgroundColor: 'tomato',
     alignItems: 'center',
     marginVertical: 7,
   },
+  panelButtonCerrar: {
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: 'tomato',
+    alignItems: 'center',
+    marginTop: 7,
+    marginBottom: 20
+  },
   panelButtonTitle: {
     fontSize: 17,
     fontWeight: 'bold',
     color: 'white',
+  },
+  header: {
+    backgroundColor: '#FFFFFF',
+    paddingTop: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  panelHeader: {
+    alignItems: 'center',
+  },
+  panelHandle: {
+    width: 40,
+    height: 6,
+    borderRadius: 4,
+    backgroundColor: '#00000040',
+    marginBottom: 10,
   },
 });
 

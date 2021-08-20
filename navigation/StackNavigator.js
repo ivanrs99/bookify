@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator, CardStyleInterpolators } from "@react-navigation/stack";
-import Chat from "../screens/ChatScreen";
-import ChatList from "../screens/ChatListScreen";
+import Chat from "../screens/chat/ChatScreen";
+import ChatList from "../screens/chat/ChatListScreen";
 import Home from "../screens/HomeScreen";
 import ReviewForm from '../screens/CreateReviewScreen'
 import Search from "../screens/SearchScreen";
