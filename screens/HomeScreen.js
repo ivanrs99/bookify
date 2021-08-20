@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, Text, StyleSheet, TouchableHighlight, ActivityIndicator, Image, ScrollView } from "react-native";
-//import { useFonts, Oswald_700Bold } from '@expo-google-fonts/oswald'
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import firebase from '../database/firebase'
 import badface from '../assets/images/badface.png'
 import ReviewItem from '../components/ReviewItem'
 
-const Home = ({ navigation }) => {
+const Home = () => {
   const [isLoaded, setLoaded] = useState(false)
   const [data, setData] = useState([])
   const [isFinished, setFinished] = useState(false)
@@ -54,11 +52,6 @@ const Home = ({ navigation }) => {
     <View style={styles.center}>
       <View style={styles.header}>
         <Text style={styles.title}>Bookify!</Text>
-        <TouchableHighlight onPress={() => navigation.push("ReviewForm")}>
-          <View>
-            <Ionicons name="add-circle-outline" color="white" style={{ fontSize: 35, marginRight: 10, marginTop: 8 }} />
-          </View>
-        </TouchableHighlight>
       </View>
       {!isLoaded ?
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -103,8 +96,6 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: 'tomato',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'flex-start',
     width: '100%',
     height: 50,

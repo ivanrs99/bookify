@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useIsFocused } from '@react-navigation/native';
 import { View, StyleSheet, Text, Image, ActivityIndicator, TouchableHighlight, ScrollView } from "react-native";
 import WavyStyle from '../components/WavyStyle';
 import profilePic from '../assets/profile.jpg';
@@ -6,10 +7,10 @@ import firebase from '../database/firebase';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ProfileBtns from '../components/ProfileBtns';
 import ReviewItem from '../components/ReviewItem';
-//import BottomSheet from 'reanimated-bottom-sheet';
-import BottomSheet from '@gorhom/bottom-sheet';
+//import BottomSheet from '@gorhom/bottom-sheet';
 
 const Profile = ({ navigation, route }) => {
+  const isFocused = useIsFocused();
   const [user, setUser] = useState("");
   const [reviews, setReviews] = useState([]);
   const [image, setImage] = useState(null)
@@ -20,7 +21,7 @@ const Profile = ({ navigation, route }) => {
   useEffect(() => {
     getData();
     setTimeout(() => { setLoaded(true) }, 1000)
-  }, [])
+  }, [isFocused])
 
   //Cerrar sesión
   const singOut = () => {
@@ -103,13 +104,11 @@ const Profile = ({ navigation, route }) => {
               {reviews.length == 0 &&
                 <View style={{ marginTop: 20 }}>
                   <Text>No hay ninguna review publicada todavía.</Text>
-                  <TouchableHighlight onPress={() => navigation.push("ReviewForm")}>
-                    <Text style={styles.crearBtn}>Crea una!</Text>
-                  </TouchableHighlight>
                 </View>
               }
             </View>
           </ScrollView>
+          {/** 
           <BottomSheet
             ref={bottomSheetRef}
             index={0}
@@ -123,7 +122,7 @@ const Profile = ({ navigation, route }) => {
                 <Text style={styles.panelButtonTitle}>Cerrar sesión</Text>
               </TouchableHighlight>
             </View>
-          </BottomSheet>
+          </BottomSheet>*/}
         </View>
       }
     </>
@@ -168,12 +167,6 @@ const styles = StyleSheet.create({
   reviews_cont: {
     marginTop: 40,
     width: '100%',
-  },
-  crearBtn: {
-    marginTop: 5,
-    color: 'tomato',
-    textDecorationLine: 'underline',
-    fontSize: 16,
   },
   panel: {
     padding: 20,

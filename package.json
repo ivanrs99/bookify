@@ -10,7 +10,6 @@
   "dependencies": {
     "@callstack/react-theme-provider": "^3.0.6",
     "@expo-google-fonts/oswald": "^0.1.0",
-    "@gorhom/bottom-sheet": "^3.6.6",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.11.11",
     "@react-navigation/drawer": "^5.12.5",
@@ -32,12 +31,10 @@
     "react-native-gesture-handler": "~1.10.2",
     "react-native-ionicons": "^4.6.5",
     "react-native-paper": "^4.9.2",
-    "react-native-reanimated": "~2.1.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
     "react-native-svg": "12.1.0",
-    "react-native-web": "~0.13.12",
-    "reanimated-bottom-sheet": "^1.0.0-alpha.22"
+    "react-native-web": "~0.13.12"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

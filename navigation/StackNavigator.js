@@ -47,7 +47,7 @@ const HomeStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="ReviewForm" component={ReviewForm} options={{tabBarVisible: false}}/>
+      <Stack.Screen name="ReviewForm" component={ReviewForm} options={{ tabBarVisible: false }} />
     </Stack.Navigator>
   );
 }
@@ -64,11 +64,18 @@ const SearchStackNavigator = () => {
 const ProfileStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
-      <Stack.Screen name="Profile" component={Profile} initialParams={{ email: firebase.auth().currentUser.email }}/>
+      <Stack.Screen name="Profile" component={Profile} initialParams={{ email: firebase.auth().currentUser.email }} />
       <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="ReviewForm" component={ReviewForm} options={{tabBarVisible: false}}/>
     </Stack.Navigator>
   );
 }
 
-export { ChatStackNavigator, HomeStackNavigator, SearchStackNavigator, ProfileStackNavigator, LogStackNavigator };
+const AddReviewStackNavigator = () => {
+  return (
+    <Stack.Navigator screenOptions={screenOptionStyle}>
+      <Stack.Screen name="ReviewForm" component={ReviewForm} />
+    </Stack.Navigator>
+  )
+}
+
+export { ChatStackNavigator, HomeStackNavigator, SearchStackNavigator, ProfileStackNavigator, LogStackNavigator, AddReviewStackNavigator };

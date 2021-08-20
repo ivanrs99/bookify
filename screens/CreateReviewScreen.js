@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useIsFocused } from '@react-navigation/native';
 import { View, StyleSheet, TouchableHighlight, Text, TextInput } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Input } from 'react-native-elements';
@@ -7,10 +8,22 @@ import firebase from '../database/firebase';
 import { showMessage } from "react-native-flash-message";
 
 const ReviewForm = ({ navigation }) => {
+  const isFocused = useIsFocused();
   const [title, setTitle] = useState("")
   const [author, setAuthor] = useState("")
   const [stars, setStars] = useState(0)
   const [review, setReview] = useState("")
+
+  useEffect(() => {
+    clearValues();
+  }, [isFocused]);
+
+  const clearValues = () => {
+    setTitle("")
+    setAuthor("")
+    setStars(0)
+    setReview("")
+  }
 
   //Guardar review en firebase
   const saveReview =  () => {
@@ -39,11 +52,11 @@ const ReviewForm = ({ navigation }) => {
         </TouchableHighlight>
       </View>
       <View style={styles.card}>
-        <Input placeholder='Title' onChangeText={setTitle} />
-        <Input placeholder='Author' onChangeText={setAuthor} />
+        <Input placeholder='Title' onChangeText={setTitle} value={title}/>
+        <Input placeholder='Author' onChangeText={setAuthor} value={author}/>
         <View style={styles.score}>
           <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 15 }}>Stars: </Text>
-          <Rating imageSize={30} onFinishRating={setStars} startingValue={0} />
+          <Rating imageSize={30} onFinishRating={setStars} startingValue={stars} />
         </View>
         <TextInput
           style={styles.input}

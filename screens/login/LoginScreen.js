@@ -67,7 +67,6 @@ const Login = ({ navigation }) => {
                 :
                 <View style={styles.container}>
                     <View style={styles.decoBackgroundTop}></View>
-                    
                     <View style={styles.decoBackgroundBottom}></View>
                     <Animatable.View style={styles.logView} animation="fadeInUpBig">
                         <Text style={{ fontSize: 30, color: 'tomato', fontWeight: 'bold', marginTop: 16, marginBottom: 10 }}>LOGIN</Text>
