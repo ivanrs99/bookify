@@ -4,8 +4,12 @@ import { TextInput } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import firebase from '../../database/firebase';
 import * as ImagePicker from 'expo-image-picker';
-import profilePic from '../../assets/profile.jpg'
+import profilePic from '../../assets/profile.jpg';
 import { showMessage } from "react-native-flash-message";
+import global from '../../components/global';
+import { Dimensions } from 'react-native';
+
+const vW = Dimensions.get('window').width;
 
 const Register = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -13,6 +17,8 @@ const Register = ({ navigation }) => {
   const [pass, setPass] = useState("");
   const [image, setImage] = useState(null);
   const find = useRef(false);
+
+  
 
   useEffect(() => {
     (async () => {
@@ -124,14 +130,12 @@ const Register = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.decoBackground}></View>
       <View style={styles.backButton}>
         <TouchableHighlight onPress={() => navigation.goBack()}>
           <Ionicons name="chevron-back-outline" size="large" color="white" style={{ fontSize: 30 }} />
         </TouchableHighlight>
       </View>
       <View style={styles.regView}>
-        <Text style={{ fontSize: 30, color: 'tomato', fontWeight: 'bold', marginTop: 16, marginBottom: 10 }}>REGISTER</Text>
         {image ?
           <TouchableHighlight onPress={pickImage}>
             <Image source={{ uri: image }} style={styles.profileImg} onPress={pickImage} />
@@ -143,20 +147,20 @@ const Register = ({ navigation }) => {
         }
         <TextInput
           label="Email" value={email} onChangeText={setEmail}
-          underlineColor='tomato' outlineColor='tomato'
-          theme={{ colors: { text: 'black', primary: 'tomato', background: 'transparent' } }}
+          underlineColor={global.PRIMARY_COLOR} outlineColor={global.PRIMARY_COLOR}
+          theme={{ colors: { text: 'black', primary: global.PRIMARY_COLOR, background: 'transparent' } }}
           style={{ margin: 10, width: '90%', height: 60, marginBottom: 15 }}
         />
         <TextInput
           label="User" value={user} onChangeText={setUser}
-          underlineColor='tomato' outlineColor='tomato'
-          theme={{ colors: { text: 'black', primary: 'tomato', background: 'transparent' } }}
+          underlineColor={global.PRIMARY_COLOR} outlineColor={global.PRIMARY_COLOR}
+          theme={{ colors: { text: 'black', primary: global.PRIMARY_COLOR, background: 'transparent' } }}
           style={{ margin: 10, width: '90%', height: 60, marginBottom: 15 }}
         />
         <TextInput
           label="Password" secureTextEntry value={pass} onChangeText={setPass}
-          underlineColor='tomato' outlineColor='tomato'
-          theme={{ colors: { text: 'black', primary: 'tomato', background: 'transparent' } }}
+          underlineColor={global.PRIMARY_COLOR} outlineColor={global.PRIMARY_COLOR}
+          theme={{ colors: { text: 'black', primary: global.PRIMARY_COLOR, background: 'transparent' } }}
           style={{ margin: 10, width: '90%', height: 60, marginBottom: 30 }}
         />
       </View>
@@ -171,34 +175,25 @@ const Register = ({ navigation }) => {
   );
 };
 const styles = StyleSheet.create({
-  backButton: {
-    position: 'absolute',
-    top: 5,
-    left: 5,
-  },
-  decoBackground: {
-    backgroundColor: 'tomato',
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-  },
   container: {
-    backgroundColor: 'white',
-    display: 'flex',
-    flexDirection: 'column',
+    backgroundColor: global.PRIMARY_COLOR,
     alignItems: "center",
     textAlign: "center",
     height: '100%',
     width: '100%',
   },
+  backButton: {
+    position: 'absolute',
+    top: 5,
+    left: 5,
+  },  
   regView: {
     backgroundColor: '#fff',
     alignItems: 'center',
-    borderColor: 'black',
     borderRadius: 10,
-    width: '80%',
     marginTop: 70,
     padding: 10,
+    width: '90%',
   },
   buttonsView: {
     alignItems: 'center',
@@ -208,13 +203,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 50,
+    borderRadius: 10,
     marginBottom: 10,
-    width: 130,
-    height: 34,
+    width: vW-35,
+    height: 37,
   },
   textRegButton: {
-    color: 'tomato',
+    color: global.PRIMARY_COLOR,
     fontSize: 20,
     fontWeight: 'bold'
   },

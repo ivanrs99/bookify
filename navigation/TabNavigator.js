@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { ChatStackNavigator, HomeStackNavigator, SearchStackNavigator, ProfileStackNavigator, AddReviewStackNavigator } from "./StackNavigator";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import global from '../components/global';
 
 const Tab = createBottomTabNavigator();
 
@@ -26,7 +27,7 @@ const tabScreenOptions = ({ route }) => ({
                         height: 45,
                         width: 45,
                         borderRadius: 58,
-                        backgroundColor: 'tomato',
+                        backgroundColor: global.PRIMARY_COLOR,
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}>
@@ -44,7 +45,7 @@ const BottomTabNavigator = () => {
         <Tab.Navigator
             screenOptions={tabScreenOptions}
             tabBarOptions={{
-                activeTintColor: 'tomato',
+                activeTintColor: global.PRIMARY_COLOR,
                 inactiveTintColor: 'gray',
             }}
         >

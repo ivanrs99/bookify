@@ -8,6 +8,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import ProfileBtns from '../components/ProfileBtns';
 import ReviewItem from '../components/ReviewItem';
 import BottomSheet from 'reanimated-bottom-sheet';
+import global from '../components/global';
 
 const Profile = ({ navigation, route }) => {
   const [user, setUser] = useState("");
@@ -28,8 +29,8 @@ const Profile = ({ navigation, route }) => {
   }, [isFocused])
 
   const singOut = () => {
-    firebase.auth().signOut()
-    navigation.popToTop()
+    //navigation.popToTop()
+    firebase.auth().signOut().then(navigation.popToTop())
   }
 
   const getData = async () => {
@@ -69,6 +70,7 @@ const Profile = ({ navigation, route }) => {
     <View style={styles.panel}>
       <TouchableHighlight
         style={styles.panelButton}
+        onPress={() => singOut()}
         >
         <Text style={styles.panelButtonTitle}>Editar perfil</Text>
       </TouchableHighlight>
@@ -98,20 +100,24 @@ const Profile = ({ navigation, route }) => {
         initialSnap={1}
         onOpenEnd={() => setOpen(true)}
         onCloseEnd={() => setOpen(false)}
+        enabledContentTapInteraction={false}
       />
       {!isLoaded ?
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <ActivityIndicator size="large" color="tomato" />
+          <ActivityIndicator size="large" color={global.PRIMARY_COLOR} />
         </View>
         :
         <View>
           <View style={styles.menu_user}>
             <Text style={styles.user}>@{user.user}</Text>
-            {route.params?.email == firebase.auth().currentUser.email &&
+            {/** route.params?.email == firebase.auth().currentUser.email &&
               <TouchableHighlight onPress={() => handleBS()}>
                 <Ionicons name="menu-outline" color="white" style={styles.menu_icon} />
               </TouchableHighlight>
-            }
+             */}
+             <TouchableHighlight onPress={() => handleBS()}>
+                <Ionicons name="menu-outline" color="white" style={styles.menu_icon} />
+              </TouchableHighlight>
           </View>
           <ScrollView>
             <WavyStyle customStyles={styles.svgCurve} />
@@ -122,7 +128,7 @@ const Profile = ({ navigation, route }) => {
                 <Image source={profilePic} style={styles.profileImg} />
               }
             </View>
-            {route.params?.email != firebase.auth().currentUser.email && <ProfileBtns />}
+            {/**route.params?.email != firebase.auth().currentUser.email && <ProfileBtns /> */}
             <View style={styles.reviews_cont}>
               {reviews.map((review, i) => {
                 return (
@@ -146,7 +152,7 @@ const Profile = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   menu_user: {
-    backgroundColor: 'tomato',
+    backgroundColor: global.PRIMARY_COLOR,
     position: 'absolute',
     display: 'flex',
     flexDirection: 'row',
@@ -190,14 +196,14 @@ const styles = StyleSheet.create({
   panelButton: {
     padding: 10,
     borderRadius: 10,
-    backgroundColor: 'tomato',
+    backgroundColor: global.PRIMARY_COLOR,
     alignItems: 'center',
     marginVertical: 7,
   },
   panelButtonCerrar: {
     padding: 10,
     borderRadius: 10,
-    backgroundColor: 'tomato',
+    backgroundColor: global.PRIMARY_COLOR,
     alignItems: 'center',
     marginTop: 7,
     marginBottom: 20

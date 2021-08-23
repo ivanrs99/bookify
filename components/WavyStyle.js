@@ -1,12 +1,13 @@
 import React from 'react';
 import { View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
+import global from '../components/global';
 
 
 export default function WavyStyle({ customStyles }) {
   return (
     <View style={customStyles}>
-      <View style={{ backgroundColor: 'tomato', height: 160 }}>
+      <View style={{ backgroundColor: global.PRIMARY_COLOR, height: 160 }}>
         <Svg
           height="75%"
           width="100%"

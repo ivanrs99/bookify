@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, Text, StyleSheet, TouchableHighlight, ActivityIndicator, Image, ScrollView } from "react-native";
-import firebase from '../database/firebase'
-import badface from '../assets/images/badface.png'
-import ReviewItem from '../components/ReviewItem'
+import firebase from '../database/firebase';
+import badface from '../assets/images/badface.png';
+import ReviewItem from '../components/ReviewItem';
+import global from '../components/global';
+
 
 const Home = () => {
   const [isLoaded, setLoaded] = useState(false)
@@ -55,7 +57,7 @@ const Home = () => {
       </View>
       {!isLoaded ?
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <ActivityIndicator size="large" color="tomato" />
+          <ActivityIndicator size="large" color={global.PRIMARY_COLOR} />
         </View>
         :
         <>
@@ -95,7 +97,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   header: {
-    backgroundColor: 'tomato',
+    backgroundColor: global.PRIMARY_COLOR,
     alignItems: 'flex-start',
     width: '100%',
     height: 50,
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   seeTxt: {
-    color: 'tomato',
+    color: global.PRIMARY_COLOR,
     fontSize: 20,
     textDecorationLine: 'underline'
   }

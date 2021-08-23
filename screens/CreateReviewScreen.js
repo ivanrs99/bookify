@@ -6,6 +6,7 @@ import { Input } from 'react-native-elements';
 import { Rating } from 'react-native-elements';
 import firebase from '../database/firebase';
 import { showMessage } from "react-native-flash-message";
+import global from '../components/global';
 
 const ReviewForm = ({ navigation }) => {
   const isFocused = useIsFocused();
@@ -79,7 +80,7 @@ const ReviewForm = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'tomato',
+    backgroundColor: global.PRIMARY_COLOR,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   saveBtn: {
-    backgroundColor: 'tomato',
+    backgroundColor: global.PRIMARY_COLOR,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 50,

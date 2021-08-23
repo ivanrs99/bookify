@@ -5,6 +5,10 @@ import AppLoading from 'expo-app-loading';
 import firebase from '../../database/firebase'
 import { showMessage } from "react-native-flash-message";
 import * as Animatable from 'react-native-animatable';
+import global from '../../components/global';
+import { Dimensions } from 'react-native';
+
+const vW = Dimensions.get('window').width;
 
 const Login = ({ navigation }) => {
     const [isReady, setReady] = useState(false);
@@ -14,7 +18,6 @@ const Login = ({ navigation }) => {
     useEffect(() => {
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
-                //console.log(firebase.auth().currentUser)
                 navigation.navigate("Home")
             }
             setReady(true)
@@ -66,32 +69,31 @@ const Login = ({ navigation }) => {
                 </View>
                 :
                 <View style={styles.container}>
-                    <View style={styles.decoBackgroundTop}></View>
-                    <View style={styles.decoBackgroundBottom}></View>
+                    <View style={styles.welcomeView}>
+                        <Text style={{ color: 'white', fontSize: 24 }}>Welcome to</Text>
+                        <Text style={{ color: 'white', fontSize: 36, fontWeight: 'bold', letterSpacing: 10 }}>Bookify!</Text>
+                    </View>
                     <Animatable.View style={styles.logView} animation="fadeInUpBig">
-                        <Text style={{ fontSize: 30, color: 'tomato', fontWeight: 'bold', marginTop: 16, marginBottom: 10 }}>LOGIN</Text>
                         <TextInput
                             label="User" value={user} onChangeText={setUser}
-                            underlineColor='tomato' outlineColor='tomato'
-                            theme={{ colors: { text: 'black', primary: 'tomato', background: 'transparent' } }}
-                            style={{ margin: 10, width: '90%', height: 60, marginBottom: 15 }}
+                            underlineColor={global.PRIMARY_COLOR} outlineColor={global.PRIMARY_COLOR}
+                            theme={{ colors: { text: 'black', primary: global.PRIMARY_COLOR, background: 'transparent' } }}
+                            style={{ marginVertical: 10, width: '90%', height: 60, marginBottom: 15 }}
                         />
                         <TextInput
                             label="Password" secureTextEntry value={pass} onChangeText={setPass}
-                            underlineColor='tomato' outlineColor='tomato'
-                            theme={{ colors: { text: 'black', primary: 'tomato', background: 'transparent' } }}
-                            style={{ margin: 10, width: '90%', height: 60, marginBottom: 30 }}
+                            underlineColor={global.PRIMARY_COLOR} outlineColor={global.PRIMARY_COLOR}
+                            theme={{ colors: { text: 'black', primary: global.PRIMARY_COLOR, background: 'transparent' } }}
+                            style={{ marginVertical: 10, width: '90%', height: 60, marginBottom: 50 }}
                         />
-                    </Animatable.View>
-                    <Animatable.View style={styles.buttonsView} animation="fadeInUpBig">
                         <TouchableHighlight onPress={() => login()}>
                             <View style={styles.logButton}>
-                                <Text style={styles.textLogButton}>Login</Text>
+                                <Text style={styles.textLogButton}>Sign in</Text>
                             </View>
                         </TouchableHighlight>
                         <TouchableHighlight onPress={() => navigation.navigate("Register")}>
                             <View>
-                                <Text style={{ color: 'tomato', fontSize: 18, textDecorationLine: 'underline' }}>Register</Text>
+                                <Text style={{ color: global.PRIMARY_COLOR, fontSize: 18, textDecorationLine: 'underline' }}>Sign up</Text>
                             </View>
                         </TouchableHighlight>
                     </Animatable.View>
@@ -100,51 +102,37 @@ const Login = ({ navigation }) => {
     );
 };
 const styles = StyleSheet.create({
-    decoBackgroundTop: {
-        backgroundColor: 'tomato',
-        position: 'absolute',
-        width: '100%',
-        height: '15%',
-        top: 0,
-    },
-    decoBackgroundBottom: {
-        backgroundColor: 'tomato',
-        position: 'absolute',
-        width: '100%',
-        height: '15%',
-        bottom: 0,
-    },
     container: {
-        backgroundColor: 'white',
+        backgroundColor: global.PRIMARY_COLOR,
         display: 'flex',
         flexDirection: 'column',
+        justifyContent: 'center',
         alignItems: "center",
         textAlign: "center",
         height: '100%',
         width: '100%',
     },
+    welcomeView: {
+        height: '30%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     logView: {
         backgroundColor: '#fff',
         alignItems: 'center',
-        borderColor: 'rgba(0, 0, 0, 0.2)',
-        borderRadius: 10,
-        borderWidth: 1,
-        width: '80%',
-        marginTop: 75,
-        padding: 10,
-    },
-    buttonsView: {
-        alignItems: 'center',
-        marginTop: 20,
+        borderTopEndRadius: 20,
+        borderTopStartRadius: 20,
+        width: '100%',
+        flexGrow: 1,
     },
     logButton: {
-        backgroundColor: 'tomato',
+        backgroundColor: global.PRIMARY_COLOR,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 50,
         marginBottom: 10,
-        width: 130,
-        height: 34,
+        borderRadius: 10,
+        height: 37,
+        width: vW-30,
     },
     textLogButton: {
         color: 'white',
